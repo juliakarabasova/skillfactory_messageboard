@@ -13,4 +13,4 @@ Site on Django for sharing and replying to messages and thematic posts
 
 Тех. задание:
 
-<img src="https://github.com/juliakarabasova/skillfactory_messageboard/blob/main/ТЗ.jpg" width="500" height="250">
+<img src="https://github.com/juliakarabasova/skillfactory_messageboard/blob/main/ТЗ.jpg" width="1000" height="500">
