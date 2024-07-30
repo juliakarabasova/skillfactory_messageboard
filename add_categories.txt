@@ -1,0 +1,16 @@
+my_user = User.objects.create_user('Julia Karabasova')
+
+
+tank = Category.objects.create(category="Танки")
+heal = Category.objects.create(category="Хилы")
+dd = Category.objects.create(category="ДД")
+trader = Category.objects.create(category="Торговцы")
+gildmaster = Category.objects.create(category="Гилдмастеры")
+questgiver = Category.objects.create(category="Квестгиверы")
+smith = Category.objects.create(category="Кузнецы")
+skiner = Category.objects.create(category="Кожевники")
+potioner = Category.objects.create(category="Зельевары")
+wizards = Category.objects.create(category="Мастера заклинаний")
+
+
+post1 = Posts.objects.create(author=my_user, title='', text='')

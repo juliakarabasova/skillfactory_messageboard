@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>
+            {% block title %}
+            {% endblock title %}
+        </title>
+        {% load static %}
+        {% block header %}
+        {% endblock header %}
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+    </head>
+    <body>
+        <!-- Responsive navbar-->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top" style="margin-bottom: 1em">
+           <div class="container">
+               <a class="navbar-brand" href="#">Django flatpages</a>
+               <button class="navbar-toggler" type="button" data-toggle="collapse"
+                       data-target="#navbarResponsive"
+                       aria-controls="navbarResponsive" aria-expanded="false"
+                       aria-label="Toggle navigation">
+                   <span class="navbar-toggler-icon"></span>
+               </button>
+               <div class="collapse navbar-collapse" id="navbarResponsive">
+                   <ul class="navbar-nav ml-auto">
+                       <li class="nav-item">
+                           <a class="nav-link" href="{% url 'posts_list' %}">Объявления</a>
+                       </li>
+                       <li class="nav-item">
+                           <a class="nav-link" href="{% url 'posts_create' %}">Создать</a>
+                       </li>
+                       <li class="nav-item">
+                           <a class="nav-link" href="{% url 'posts_filter' %}">Поиск</a>
+                       </li>
+                       {% if request.user.is_authenticated %}
+                       <li class="nav-item">
+                           <a class="nav-link" href="{% url 'my_posts' request.user.pk %}">Мои объявления</a>
+                       </li>
+                       <li class="nav-item">
+                           <a class="nav-link" href="{% url 'my_post_answers' request.user.pk %}">Мне ответили</a>
+                       </li>
+                        <li class="nav-item">
+                           <a class="nav-link" href="{% url 'my_answers' request.user.pk %}">Я откликнулся</a>
+                       </li>
+                       <li>
+                           <form method="post" action="{% url 'logout' %}" style="margin-left: 20em;">
+                                {% csrf_token %}
+                                <button type="submit" style="text-decoration: underline;
+                                color: var(--bs-nav-link-color);
+                                background: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important;
+                                margin-top: 0.3em;">{{ request.user.username }}</button>
+                            </form>
+                       </li>
+                       {% else %}
+                       <li class="nav-item" style="margin-left: 43em;">
+                           <a class="nav-link" href="{% url 'login' %}">Войти</a>
+                       </li>
+                       {% endif %}
+                   </ul>
+               </div>
+           </div>
+        </nav>
+        <!-- Page content-->
+        <div class="container">
+           <div class="row">
+               <div class="col-lg-12 text-center">
+                   {% block content %}
+                   {{ flatpage.content }}
+                   {% endblock content %}
+               </div>
+           </div>
+        </div>
+    </body>
+</html>

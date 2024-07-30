@@ -1,0 +1,38 @@
+<!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+
+<!-- Название у нас будет Product -->
+{% block title %}
+Объявление
+{% endblock title %}
+
+<!-- В контенте на странице мы выводим сам товар, идентификатор которого был передан в url -->
+{% block content %}
+<h1>{{ post.title|censor }}</h1>
+<h4>Опубликовано {{ post.post_date|date:'d.m.Y' }}</h4>
+<h4>Откликов: {{ answers_count }}</h4>
+<hr>
+<div>
+    {{ post.text|safe }}
+</div>
+
+
+{% if request.user == post.author %}
+    <p>Вы являетесь автором этого поста.</p>
+    <button><a href="{% url 'posts_update' post.id %}">Редактировать</a></button>
+    <button><a href="{% url 'posts_delete' post.id %}">Удалить</a></button>
+{% else %}
+    {% if not answered %}
+        <form method="POST">
+            {% csrf_token %}
+            {{ answer_form.as_p }}
+            <button type="submit">Откликнуться</button>
+        </form>
+    {% else %}
+        <p style="color: red">Вы уже откликнулись на это объявление.</p>
+    {% endif %}
+{% endif %}
+
+{% endblock content %}

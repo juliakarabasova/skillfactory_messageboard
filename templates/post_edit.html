@@ -1,0 +1,14 @@
+{% extends 'flatpages/default.html' %}
+
+{% block header %}
+    {{ form.media }}
+{% endblock header %}
+{% block content %}
+<h1>Создать объявление</h1>
+<hr>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Сохранить" />
+</form>
+{% endblock content %}

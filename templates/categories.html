@@ -1,0 +1,34 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+{% load custom_tags %}
+
+{% block title %}
+Публикации
+{% endblock title %}
+
+{% block content %}
+<h3>Все категории</h3>
+<hr>
+<br>
+{% if categories %}
+<table style="border: none; text-align: left; margin: auto;">
+{% for category in categories %}
+    <tr>
+        <td style="padding-right: 1em;">{{ category.id }})</td>
+        <td>{{ category.category }}</td>
+        <td style="padding-left: 1em;">
+            {% if request.user not in category.subscribers.all %}
+                <button><a href="{% url 'subscribe' category.id %}">Подписаться</a></button>
+            {% else %}
+                <button><a href="{% url 'unsubscribe' category.id %}">Отписаться</a></button>
+            {% endif %}
+        </td>
+    </tr>
+{% endfor %}
+</table>
+
+{% else %}
+    <h2>Нет записей</h2>
+{% endif %}
+{% endblock content %}

@@ -1,0 +1,88 @@
+<!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+{% load custom_tags %}
+
+<!-- Название у нас будет products -->
+{% block title %}
+Объявления
+{% endblock title %}
+
+<!-- В контенте на странице мы выводим все товары -->
+{% block content %}
+<h1>Отклики на записи пользователя {{ request.user.username }}</h1>
+
+<form action="" method="get">
+   {{ filterset.form.as_p }}
+   <input type="submit" value="Найти" />
+</form>
+
+<hr>
+<h3>Найдено откликов: {{ answers|length }}</h3>
+<hr>
+
+   {% if answers %}
+       <table style="margin: 0 auto; width: 100%;">
+           <tr>
+               <th>Ссылка на пост</th>
+               <th style="padding-right: 4em;">Заголовок</th>
+               <th>Дата публикации</th>
+               <th>Автор отклика</th>
+               <th>Дата отклика</th>
+               <th>Текст отклика</th>
+               <th>Действие</th>
+           </tr>
+
+           {% for answer in answers %}
+           <tr>
+               <td><a href="{% url 'post_detail' answer.post.pk %}">{{ answer.post.pk }}</a></td>
+               <td style="text-align: left; padding-left: 1em;">{{ answer.post.title }}</td>
+               <td>{{ answer.post.post_date|date:'d.m.Y' }}</td>
+               <td>{{ answer.user.username }}</td>
+               <td>{{ answer.create_time|date:'d.m.Y' }}</td>
+               <td>{{ answer.text }}</td>
+               <td>
+                    {% if answer.accepted %}
+                        <p>Принято</p>
+                    {% else %}
+                        <form method="POST" action="{% url 'accept_answer' answer.id %}">
+                            {% csrf_token %}
+                            <button type="submit">Принять</button>
+                        </form>
+                        <form method="POST" action="{% url 'delete_answer' answer.id %}">
+                            {% csrf_token %}
+                            <button type="submit">Удалить</button>
+                        </form>
+                    {% endif %}
+                </td>
+           </tr>
+           {% endfor %}
+
+       </table>
+   {% else %}
+       <h2>Откликов нет!</h2>
+   {% endif %}
+
+    <br>
+    <br>
+
+    {% if page_obj.has_previous %}
+       <a href="?{% url_replace page=1 %}">1</a>
+       {% if page_obj.previous_page_number != 1 %}
+           ...
+           <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
+       {% endif %}
+   {% endif %}
+
+   {{ page_obj.number }}
+
+   {% if page_obj.has_next %}
+       <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
+       {% if paginator.num_pages != page_obj.next_page_number %}
+           ...
+           <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
+       {% endif %}
+   {% endif %}
+
+{% endblock content %}

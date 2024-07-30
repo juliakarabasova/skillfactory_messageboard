@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новая запись</title>
+</head>
+<body>
+    <!--  В теме письма должен быть сам заголовок статьи.
+    Текст состоит из вышеуказанного HTML и текста: «Здравствуй, username. Новая статья в твоём любимом разделе!».
+    Письмо с HTML-кодом заголовка и первых 50 символов текста статьи.
+    -->
+    <h2>Привет, пользователь. Новая статья в твоём любимом разделе!</h2>
+    <hr>
+    <br>
+    <h3>{{ post.title }}</h3>
+    <p>{{ post.text|truncatechars:50 }}</p>
+    <br>
+    <p>Читай полностью здесь: http://127.0.0.1:8000/news/{{post.pk}}</p>
+</body>
+</html>
